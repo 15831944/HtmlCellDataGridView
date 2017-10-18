@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlRenderer", "HtmlRenderer\HtmlRenderer.csproj", "{FE611685-391F-4E3E-B27E-D3150E51E49B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlRenderer.WinForms", "HtmlRenderer.WinForms\HtmlRenderer.WinForms.csproj", "{1B058920-24B4-4140-8AE7-C8C6C38CA52D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinHtmlEditor", "WinHtmlEditor\WinHtmlEditor.csproj", "{1D1EF0A4-1D49-4D42-9295-E3B28359389A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridViewHTML", "DataGridViewCellEx\DataGridViewHTML.csproj", "{99F24D58-82DA-4122-85A6-4400659C9CAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTMLDataGridViewTest", "HTMLDataGridViewTest\HTMLDataGridViewTest.csproj", "{285519C5-3D0F-453B-9635-92B6E1BE7302}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_VS2010|Any CPU = Debug_VS2010|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release_VS2010|Any CPU = Release_VS2010|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE611685-391F-4E3E-B27E-D3150E51E49B}.Debug_VS2010|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE611685-391F-4E3E-B27E-D3150E51E49B}.Debug_VS2010|Any CPU.Build.0 = Debug|Any CPU
+		{FE611685-391F-4E3E-B27E-D3150E51E49B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE611685-391F-4E3E-B27E-D3150E51E49B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE611685-391F-4E3E-B27E-D3150E51E49B}.Release_VS2010|Any CPU.ActiveCfg = Release|Any CPU
+		{FE611685-391F-4E3E-B27E-D3150E51E49B}.Release_VS2010|Any CPU.Build.0 = Release|Any CPU
+		{FE611685-391F-4E3E-B27E-D3150E51E49B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE611685-391F-4E3E-B27E-D3150E51E49B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B058920-24B4-4140-8AE7-C8C6C38CA52D}.Debug_VS2010|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B058920-24B4-4140-8AE7-C8C6C38CA52D}.Debug_VS2010|Any CPU.Build.0 = Debug|Any CPU
+		{1B058920-24B4-4140-8AE7-C8C6C38CA52D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B058920-24B4-4140-8AE7-C8C6C38CA52D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B058920-24B4-4140-8AE7-C8C6C38CA52D}.Release_VS2010|Any CPU.ActiveCfg = Release|Any CPU
+		{1B058920-24B4-4140-8AE7-C8C6C38CA52D}.Release_VS2010|Any CPU.Build.0 = Release|Any CPU
+		{1B058920-24B4-4140-8AE7-C8C6C38CA52D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B058920-24B4-4140-8AE7-C8C6C38CA52D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D1EF0A4-1D49-4D42-9295-E3B28359389A}.Debug_VS2010|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1EF0A4-1D49-4D42-9295-E3B28359389A}.Debug_VS2010|Any CPU.Build.0 = Debug|Any CPU
+		{1D1EF0A4-1D49-4D42-9295-E3B28359389A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1EF0A4-1D49-4D42-9295-E3B28359389A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D1EF0A4-1D49-4D42-9295-E3B28359389A}.Release_VS2010|Any CPU.ActiveCfg = Release_VS2010|Any CPU
+		{1D1EF0A4-1D49-4D42-9295-E3B28359389A}.Release_VS2010|Any CPU.Build.0 = Release_VS2010|Any CPU
+		{1D1EF0A4-1D49-4D42-9295-E3B28359389A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D1EF0A4-1D49-4D42-9295-E3B28359389A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99F24D58-82DA-4122-85A6-4400659C9CAD}.Debug_VS2010|Any CPU.ActiveCfg = Debug|Any CPU
+		{99F24D58-82DA-4122-85A6-4400659C9CAD}.Debug_VS2010|Any CPU.Build.0 = Debug|Any CPU
+		{99F24D58-82DA-4122-85A6-4400659C9CAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99F24D58-82DA-4122-85A6-4400659C9CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99F24D58-82DA-4122-85A6-4400659C9CAD}.Release_VS2010|Any CPU.ActiveCfg = Release|Any CPU
+		{99F24D58-82DA-4122-85A6-4400659C9CAD}.Release_VS2010|Any CPU.Build.0 = Release|Any CPU
+		{99F24D58-82DA-4122-85A6-4400659C9CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99F24D58-82DA-4122-85A6-4400659C9CAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{285519C5-3D0F-453B-9635-92B6E1BE7302}.Debug_VS2010|Any CPU.ActiveCfg = Debug|Any CPU
+		{285519C5-3D0F-453B-9635-92B6E1BE7302}.Debug_VS2010|Any CPU.Build.0 = Debug|Any CPU
+		{285519C5-3D0F-453B-9635-92B6E1BE7302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{285519C5-3D0F-453B-9635-92B6E1BE7302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{285519C5-3D0F-453B-9635-92B6E1BE7302}.Release_VS2010|Any CPU.ActiveCfg = Release|Any CPU
+		{285519C5-3D0F-453B-9635-92B6E1BE7302}.Release_VS2010|Any CPU.Build.0 = Release|Any CPU
+		{285519C5-3D0F-453B-9635-92B6E1BE7302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{285519C5-3D0F-453B-9635-92B6E1BE7302}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
