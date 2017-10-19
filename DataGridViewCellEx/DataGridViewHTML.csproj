@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataGridViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DataGridViewHTMLColumn.cs" />
     <Compile Include="DataGridViewHTMLColumnScrollbars.cs" />
     <Compile Include="HtmlEditDlg.cs">

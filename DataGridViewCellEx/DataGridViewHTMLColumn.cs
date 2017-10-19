@@ -7,6 +7,7 @@ using System.IO;
 using System.ComponentModel;
 using TheArtOfDev.HtmlRenderer.WinForms;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 //using HTMLDataGridViewTest.Properties;
 
 namespace DataGridViewHTML
@@ -39,10 +40,6 @@ namespace DataGridViewHTML
     {
         public HTMLOverflow m_htmlOverflowType = HTMLOverflow.ELIPSIS;
 
-        private readonly HtmlLabel m_editingControl = new HtmlLabel();
-
-        private string m_htmlText = "";
-
         public override Type EditType
         {
             get
@@ -71,19 +68,6 @@ namespace DataGridViewHTML
             }
         }
 
-        private void SetHTMLPanelText(HtmlLabel ctl, string text)
-        {
-            try
-            {
-                ctl.Text = text;
-                m_htmlText = text;
-            }
-            catch (ArgumentException)
-            {
-                ctl.Text = text;
-            }
-        }
-
         private Image GenerateHTMLImage(int rowIndex, object value, bool selected)
         {
             Size cellSize = GetSize(rowIndex);
@@ -91,47 +75,33 @@ namespace DataGridViewHTML
             if (cellSize.Width < 1 || cellSize.Height < 1)
                 return null;
 
-			//cellSize.Height -= 1;
-			//cellSize.Width -= 1;
+			Color backColor = selected ? SystemColors.Highlight : SystemColors.Window;
 
-			m_editingControl.Size = cellSize;// GetSize(rowIndex);
+			Image htmlImage = null;
+			Size fullImageSize;
 
-			m_editingControl.BackColor = selected ? SystemColors.Highlight : SystemColors.Window;
-			m_editingControl.ForeColor = selected ? SystemColors.HighlightText : SystemColors.WindowText;
-
-			SetHTMLPanelText(m_editingControl, Convert.ToString(value));
-
-            if (m_editingControl != null)
+            if ( RenderHTMLImage( Convert.ToString(value), cellSize, backColor, out htmlImage, out fullImageSize ) == false )
             {
-                Image htmlImage = null;
-				Size fullImageSize;
-
-                if ( RenderHTMLImage( Convert.ToString(value), cellSize, m_editingControl.BackColor, out htmlImage, out fullImageSize ) == false )
-                {
-					Debug.WriteLine("Failed to Generate HTML image");
-                    return htmlImage;
-                }
-
-				//htmlImage = Add1pxBottomBorder(htmlImage);
-				htmlImage = DrawCellBorder(htmlImage, this.DataGridView.CellBorderStyle);
-
-				if ( fullImageSize.Height > cellSize.Height ) 
-                {
-                    // there is more html than being displayed!! Lets add some elipsis (...) to the image
-                    // to let the user know there is more to display
-                    if (m_htmlOverflowType == HTMLOverflow.ELIPSIS)
-                        htmlImage = AddElipsisToImage(htmlImage);
-
-                    if (m_htmlOverflowType == HTMLOverflow.RED_TRIANGLE)
-                        htmlImage = AddRedTriangleToImage(htmlImage);
-
-                }
-
-               
+				Debug.WriteLine("Failed to Generate HTML image");
                 return htmlImage;
             }
 
-            return null;
+			//htmlImage = Add1pxBottomBorder(htmlImage);
+			htmlImage = DrawCellBorder(htmlImage, this.DataGridView.CellBorderStyle);
+
+			if ( fullImageSize.Height > cellSize.Height ) 
+            {
+                // there is more html than being displayed!! Lets add some elipsis (...) to the image
+                // to let the user know there is more to display
+                if (m_htmlOverflowType == HTMLOverflow.ELIPSIS)
+                    htmlImage = AddElipsisToImage(htmlImage);
+
+                if (m_htmlOverflowType == HTMLOverflow.RED_TRIANGLE)
+                    htmlImage = AddRedTriangleToImage(htmlImage);
+
+            }
+
+            return htmlImage;
         }
 
         Image Add1pxBottomBorder(Image img)
@@ -260,7 +230,7 @@ namespace DataGridViewHTML
                 // Step 5: Render the HTML imaage a second time with the cell size width / height
                 htmlImage = HtmlRender.RenderToImage(htmlText, new Size(cellSize.Width, cellSize.Height), backgroundColor : backColor); 
 
-                m_editingControl.Text = htmlText;
+                //m_editingControl.Text = htmlText;
             }
             catch(Exception ex)
             {
@@ -276,18 +246,21 @@ namespace DataGridViewHTML
             base.InitializeEditingControl(rowIndex, initialFormattedValue, dataGridViewCellStyle);
 
             HtmlLabel ctl = DataGridView.EditingControl as HtmlLabel;
-           
-           // initialFormattedValue = "This is an <b>HtmlLabel</b> control";
-            if (ctl != null)
+			//ctl.BackColor = SystemColors.Highlight;
+
+		   // initialFormattedValue = "This is an <b>HtmlLabel</b> control";
+			if (ctl != null)
             {
-                if ( initialFormattedValue == null )
-                {
-                    string nullText = "";// This <b>cell</b> has a <span style=\"color: red\">null</span> value!";
-                    SetHTMLPanelText(ctl, nullText);
-                }
-                else
-                    SetHTMLPanelText(ctl, Convert.ToString(initialFormattedValue));
-            }
+				if (initialFormattedValue == null)
+				{
+					string nullText = "";// This <b>cell</b> has a <span style=\"color: red\">null</span> value!";
+					ctl.Text = nullText;
+					//SetHTMLPanelText(ctl, nullText);
+				}
+				else
+					ctl.Text = Convert.ToString(initialFormattedValue);
+					//SetHTMLPanelText(ctl, Convert.ToString(initialFormattedValue));
+			}
         }
 
         protected override Size GetPreferredSize(Graphics graphics, DataGridViewCellStyle cellStyle, int rowIndex, Size constraintSize)
@@ -301,7 +274,7 @@ namespace DataGridViewHTML
             PointF point = new PointF(0, 0);
 
             // send the html text to the renderer to find out its size
-            SizeF htmlSize = HtmlRender.Render(graphics, m_htmlText, point, maxAllowableSize);
+            SizeF htmlSize = HtmlRender.Render(graphics, Value.ToString(), point, maxAllowableSize);
 
             // return the cells preffered size
             return htmlSize.ToSize();
@@ -379,21 +352,35 @@ namespace DataGridViewHTML
         #endregion
     }
 
+
     public class DataGridViewHTMLEditingControl : HtmlLabel, IDataGridViewEditingControl
     {
-        private DataGridView m_dataGridView;
+        private DataGridViewEx m_dataGridView;
         private int m_rowIndex;
         private bool m_valueChanged;
+		private const int WM_KEYDOWN = 0x0100;
+		private const int WM_KEYUP = 0x0101;
 
-        public DataGridViewHTMLEditingControl()
+		//[DllImport("user32.dll", EntryPoint = "SendMessage")]
+		//private static extern int SendMessage(IntPtr hwnd, int wMsg, IntPtr wParam, IntPtr lParam);
+
+		public DataGridViewHTMLEditingControl()
         {
-            this.BorderStyle = BorderStyle.None;
+            this.BorderStyle = BorderStyle.FixedSingle;
             AutoSize = false;
+
+			this.LinkClicked += DataGridViewHTMLEditingControl_LinkClicked;
         }
 
-        #region IDataGridViewEditingControl Members
 
-        public void ApplyCellStyleToEditingControl(DataGridViewCellStyle dataGridViewCellStyle)
+		private void DataGridViewHTMLEditingControl_LinkClicked(object sender, TheArtOfDev.HtmlRenderer.Core.Entities.HtmlLinkClickedEventArgs e)
+		{
+			this.m_dataGridView.OnLinkClicked(sender, e);
+		}
+
+		#region IDataGridViewEditingControl Members
+
+		public void ApplyCellStyleToEditingControl(DataGridViewCellStyle dataGridViewCellStyle)
         {
             this.Font = dataGridViewCellStyle.Font;
         }
@@ -406,7 +393,8 @@ namespace DataGridViewHTML
             }
             set
             {
-                m_dataGridView = value;
+				if (value is DataGridViewEx)
+					m_dataGridView = value as DataGridViewEx;
             }
         }
 
@@ -449,17 +437,17 @@ namespace DataGridViewHTML
         
         public bool EditingControlWantsInputKey(Keys keyData, bool dataGridViewWantsInputKey)
         {
-            switch ((keyData & Keys.KeyCode))
-            {
-                case Keys.Return:
-                case Keys.Left:
-                case Keys.Right:
-                case Keys.Up:
-                case Keys.Down:
-                    return true;
-            }
+			switch ((keyData & Keys.KeyCode))
+			{
+				case Keys.Return:
+				case Keys.Left:
+				case Keys.Right:
+				case Keys.Up:
+				case Keys.Down:
+					return true;
+			}
 
-            return !dataGridViewWantsInputKey;
+			return !dataGridViewWantsInputKey;
         }
 
         public Cursor EditingPanelCursor
